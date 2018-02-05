@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ChangeLocationModule3</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Network</string>
+    <string name="location_settings">Location settings</string>
+    <string name="add_element">Add task</string>
+    <string name="open_settings">Open settings</string>
+    <string name="test_sort">Try sort</string>
+</resources>
