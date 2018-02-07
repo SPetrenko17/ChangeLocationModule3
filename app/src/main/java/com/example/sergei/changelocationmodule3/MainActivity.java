@@ -1,6 +1,7 @@
 package com.example.sergei.changelocationmodule3;
 
 import android.content.Intent;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import clientGeo.YaGeocoder;
 
 public class MainActivity extends AppCompatActivity {
     static ArrayList<String> cordList;
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     Methods methods; //ранее CheckCorrect
 
     String strTime;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         cordList = new ArrayList<String>();
         cordList.add(0, "00.0000,00.0000,00:00");
         showMyLocation();
+
+
+
     }
     public ArrayList<String> getCordList(){
         return  cordList;
