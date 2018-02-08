@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/frame4"
-        android:layout_below="@+id/frame3">
+        android:layout_below="@+id/frame5">
 
         <fragment android:name="com.example.sergei.changelocationmodule3.ListViewFragment"
             android:id="@+id/tfragmentListView"
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/frame5"
-        android:layout_below="@+id/frame4">
+        android:layout_below="@+id/frame3">
 
         <fragment android:name="com.example.sergei.changelocationmodule3.MapFragment"
             android:id="@+id/tfragmentMap"

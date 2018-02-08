@@ -7,5 +7,6 @@
     <string name="open_settings">Open settings</string>
     <string name="test_sort">Try sort</string>
     <string name="title_activity_maps">Map</string>
+    <string name="map">Здесь может быть ваша карта</string>
 
 </resources>

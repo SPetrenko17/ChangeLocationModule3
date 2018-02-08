@@ -113,9 +113,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void onClickLocationSettings(View view) {
-       // startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+    };
+    public void onClickShowMap(View view) {
         startActivity(new Intent(MainActivity.this, MapsActivity.class));
     };
+
     public void addListElement(View view){
         if(methods.isCorrect(addTask.getText().toString())){
 
