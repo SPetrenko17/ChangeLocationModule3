@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import clientGeo.YaGeocoder;
+//import clientGeo.YaGeocoder;
 
 public class MainActivity extends AppCompatActivity {
     static ArrayList<String> cordList;
@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void onClickLocationSettings(View view) {
-        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+       // startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        startActivity(new Intent(MainActivity.this, MapsActivity.class));
     };
     public void addListElement(View view){
         if(methods.isCorrect(addTask.getText().toString())){

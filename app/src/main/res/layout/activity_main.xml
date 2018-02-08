@@ -55,6 +55,18 @@
             android:layout_height="wrap_content">
         </fragment>
     </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frame5"
+        android:layout_below="@+id/frame4">
+
+        <fragment android:name="com.example.sergei.changelocationmodule3.MapFragment"
+            android:id="@+id/tfragmentMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </fragment>
+    </FrameLayout>
 
 
 
