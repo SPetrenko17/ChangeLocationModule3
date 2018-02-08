@@ -41,7 +41,8 @@ public class ListViewFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_listview, parent, false);
         locationTaskList = v.findViewById(R.id.LocationTaskList);
         MainActivity.cordList = new ArrayList<String>();
-        MainActivity.cordList.add(0, "00.0000,00.0000,00:00");
+        MainActivity.cordList.add(0, "55.743621, 37.681500,00:00");
+        //MainActivity.cordList.add(0, "00.0000,00.0000,00:00");
         return  v;
     }
 

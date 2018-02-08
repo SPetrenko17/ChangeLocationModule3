@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mTimer.schedule(mMyTimerTask, 0, 1000);
 
         cordList = new ArrayList<String>();
-        cordList.add(0, "00.0000,00.0000,00:00");
+        cordList.add(0, "55.743621, 37.681500,00:00");
         showMyLocation();
 
 
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             addTask.setText(null);
             methods.info=null;
             cordList=methods.SortList(cordList);
+
         }
         else {
             Toast.makeText(this, "pizdets: "+methods.getInfo(), Toast.LENGTH_LONG).show();
