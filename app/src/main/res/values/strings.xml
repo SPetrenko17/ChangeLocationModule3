@@ -6,7 +6,9 @@
     <string name="add_element">Add task</string>
     <string name="open_settings">Open settings</string>
     <string name="test_sort">Try sort</string>
+    <string name="upd_button">Update list</string>
     <string name="title_activity_maps">Map</string>
-    <string name="map">Здесь может быть ваша карта</string>
+    <string name="map">Show map</string>
+    <string name="add_map_task">Add map task</string>
 
 </resources>

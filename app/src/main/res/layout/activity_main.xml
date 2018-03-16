@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/frame1">
+        android:id="@+id/EditTextFrame">
 
         <fragment
             android:id="@+id/tfragmetEdit"
@@ -22,8 +22,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/frame2"
-        android:layout_below="@+id/frame1">
+        android:id="@+id/DataFrame"
+        android:layout_below="@+id/EditTextFrame">
 
         <fragment android:name="com.example.sergei.changelocationmodule3.DataViewsFragment"
             android:id="@+id/tfragmentDataView"
@@ -34,8 +34,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/frame3"
-        android:layout_below="@+id/frame2">
+        android:id="@+id/SettingsFrame"
+        android:layout_below="@+id/DataFrame">
 
         <fragment android:name="com.example.sergei.changelocationmodule3.SettingsFragment"
             android:id="@+id/tfragmentSettings"
@@ -43,28 +43,19 @@
             android:layout_height="wrap_content">
         </fragment>
     </FrameLayout>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/frame4"
-        android:layout_below="@+id/frame5">
-
-        <fragment android:name="com.example.sergei.changelocationmodule3.ListViewFragment"
-            android:id="@+id/tfragmentListView"
+        android:id="@+id/ListFrame"
+        android:layout_below="@+id/SettingsFrame">
+        <fragment
+            android:id="@+id/listfragment"
+            android:name="com.example.sergei.changelocationmodule3.ListFragmentListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </fragment>
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frame5"
-        android:layout_below="@+id/frame3">
-
-        <fragment android:name="com.example.sergei.changelocationmodule3.MapFragment"
-            android:id="@+id/tfragmentMap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            >
         </fragment>
     </FrameLayout>
 

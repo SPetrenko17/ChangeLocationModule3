@@ -136,6 +136,9 @@ public class Methods {
         else return false;
 
     }
+    protected static int returnSeconds(String s) {
+        return Integer.parseInt(s.split(",")[2].split(":")[0])*3600+Integer.parseInt(s.split(",")[2].split(":")[1])*60;
+    }
 
 
 }
