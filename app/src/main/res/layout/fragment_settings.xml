@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wtf"
-        android:onClick="sortList"
+        android:onClick="quickSort"
         android:text="@string/test_sort"/>
     <Button
         android:id="@+id/updList"

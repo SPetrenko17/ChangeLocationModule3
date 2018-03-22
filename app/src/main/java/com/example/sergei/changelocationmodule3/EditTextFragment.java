@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static com.example.sergei.changelocationmodule3.MainActivity.cordList;
+
 
 /**
  * Created by sergei on 04.02.18.

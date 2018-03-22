@@ -2,6 +2,7 @@ package com.example.sergei.changelocationmodule3;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,14 +32,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback  {
+    int DIALOG_TIME = 1;
+    int myHour ;
+    int myMinute ;
 
     public static GoogleMap mMap;
     public GoogleMap gm;
     public LatLng item;
+
+    static TimePickerDialog.OnTimeSetListener t;
+    static TimePickerDialog timePickerDialog;
+    Calendar time=Calendar.getInstance();
 //    private Calendar time=Calendar.getInstance();
-//    private String locTime=" ";
-//    TimePickerDialog.OnTimeSetListener t;
-//    TimePickerDialog timePickerDialog;
+    public String locTime=" ";
     //Boolean timesetted=false;
 
     @Override
@@ -47,20 +54,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//         t=new TimePickerDialog.OnTimeSetListener() {
-//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                time.set(Calendar.HOUR_OF_DAY, hourOfDay);
-//                time.set(Calendar.MINUTE, minute);
-//                //timesetted=true;
-//
-//            }
-//
-//
-//
-//        };
-//        setTime(t);
+        showDialog(DIALOG_TIME);
+
+        /*
+         t=new TimePickerDialog.OnTimeSetListener() {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                time.set(Calendar.MINUTE, minute);
+                //timesetted=true;
+
+            }
 
 
+        };
+        try {
+            setTime(t);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+        }
+        */
+
+
+
+
+
+    }
+    TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            myHour = hourOfDay;
+            myMinute = minute;
+            locTime=myHour+":"+myMinute;
+            Log.d("TIME", "Time is " + myHour + " hours " + myMinute + " minutes");
+        }
+    };
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_TIME) {
+            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+    public void setTime(TimePickerDialog.OnTimeSetListener t) throws InterruptedException {
+        timePickerDialog=  new TimePickerDialog(this, t, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), true);
+        timePickerDialog.show();//Проблема в том, что я не знаю как уобработать кнопку ок на диалоге
+
+        locTime=time.getTime().getHours()+":"+time.getTime().getMinutes();
+        Log.d("TIME",locTime);
 
     }
 
@@ -140,8 +180,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //mMap.addMarker(new MarkerOptions().position(itSchool).title("Время задачи: "+MainActivity.cordList.get(0).split(",")[2]));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(itSchool));
-        AddAllMarkers(MainActivity.cordList                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              );
+        AddAllMarkers(MainActivity.ts);
         showLocButton();
+
+
 
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -151,8 +193,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     //for(int i=0;i<Integer.MAX_VALUE;i++){}
                     //if(timePickerDialog.isShowing()==true) {}
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("Время задачи:" + MainActivity.locTime));
-                    MainActivity.cordList.add(latLng.latitude+","+latLng.longitude+","+MainActivity.locTime);
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("Время задачи:" + locTime));
+                    MainActivity.ts.add(new Task(latLng.latitude,latLng.longitude,Integer.parseInt(locTime.split(":")[0]),Integer.parseInt(locTime.split(":")[1])));
+                    //MainActivity.ts.add(latLng.latitude+","+latLng.longitude+","+MainActivity.locTime);
                     MainActivity.isTaskFromMap=false;
                     //Нужна пауза ибо не невозможно получить новое время для маркера
                     //startActivity(new Intent(MapsActivity.this, MainActivity.class));
@@ -164,9 +207,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public void AddAllMarkers(ArrayList<String> cl){
-        for(String s:cl){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(s.split(",")[0]),Double.parseDouble(s.split(",")[1]))).title("Время задачи: "+s.split(",")[2]));
+    public void AddAllMarkers(ArrayList<Task> ts){
+        for(Task t:ts){
+            mMap.addMarker(new MarkerOptions().position(new LatLng(t.getLat(),t.getLng())).title("Время задачи: "+t.getHours()+t.getMinutes()));
         }
     }
 
