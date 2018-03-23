@@ -5,31 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <Button
-        android:id="@+id/wtf"
+        android:id="@+id/AddMapTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addMapTask"
+        android:text="@string/add_map_task"/>
+    <Button
+        android:id="@+id/settingActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickLocationSettings"
-        android:text="@string/open_settings"/>
-    <Button
-        android:id="@+id/sortList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/wtf"
-        android:onClick="quickSort"
-        android:text="@string/test_sort"/>
-    <Button
-        android:id="@+id/updList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sortList"
-        android:onClick="updButton"
-        android:text="@string/upd_button"/>
+        android:text="@string/open_settings"
+        android:layout_toRightOf="@id/showMap"/>
+
     <Button
         android:id="@+id/showMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickShowMap"
         android:text="@string/map"
-        android:layout_below="@+id/sortList"
-        android:layout_toRightOf="@+id/updList"/>
+        android:layout_toRightOf="@+id/AddMapTask"/>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tv1"
+        android:layout_below="@id/AddMapTask"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tv2"
+        android:layout_below="@+id/textView1" />
+
 </RelativeLayout>

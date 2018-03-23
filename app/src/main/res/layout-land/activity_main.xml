@@ -6,38 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/EditTextFrame">
-
-        <fragment
-            android:id="@+id/tfragmetEdit"
-            android:name="com.example.sergei.changelocationmodule3.EditTextFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </fragment>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/DataFrame"
-        android:layout_below="@+id/EditTextFrame"
-        android:layout_toRightOf="@id/SettingsFrame">
-
-        <fragment android:name="com.example.sergei.changelocationmodule3.DataViewsFragment"
-            android:id="@+id/tfragmentDataView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </fragment>
-    </FrameLayout>
-    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/SettingsFrame"
-        android:layout_below="@+id/EditTextFrame"
-        >
-
+        android:id="@+id/SettingsFrame">
         <fragment android:name="com.example.sergei.changelocationmodule3.SettingsFragment"
             android:id="@+id/tfragmentSettings"
             android:layout_width="match_parent"

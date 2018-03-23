@@ -4,11 +4,11 @@
     <string name="provider_network">Network</string>
     <string name="location_settings">Location settings</string>
     <string name="add_element">Add task</string>
-    <string name="open_settings">Open settings</string>
+    <string name="open_settings">Settings</string>
     <string name="test_sort">Sort</string>
     <string name="upd_button">Update list</string>
     <string name="title_activity_maps">Map</string>
     <string name="map">Show map</string>
-    <string name="add_map_task">Add map task</string>
+    <string name="add_map_task">Add task</string>
 
 </resources>

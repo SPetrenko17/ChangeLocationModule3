@@ -16,13 +16,6 @@
         android:layout_below="@+id/AddTask"
         android:onClick="addListElement"
         android:text="@string/add_element"/>
-    <Button
-        android:id="@+id/AddMapTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/AddTask"
-        android:layout_toRightOf="@+id/ApproveEdits"
-        android:onClick="addMapTask"
-        android:text="@string/add_map_task"/>
+
 
    </RelativeLayout>

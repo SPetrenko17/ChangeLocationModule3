@@ -18,7 +18,6 @@ import android.widget.Toast;
  */
 
 public class EditTextFragment extends Fragment {
-    // android:onClick="addListElement"
     EditText addTask;
     Button approveEdits;
     @Override
@@ -26,7 +25,6 @@ public class EditTextFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) { //parent у vv73
@@ -41,22 +39,4 @@ public class EditTextFragment extends Fragment {
         final Activity activity = getActivity();
         super.onViewCreated(view, savedInstanceState);
     }
-    /* public void addListElement(View view){
-        if(MainActivity.methods.isCorrect(addTask.getText().toString())){
-
-            cordList.add(addTask.getText().toString());
-            addTask.setText(null);
-            MainActivity.methods.info=null;
-            cordList=MainActivity.methods.SortList(cordList);
-
-        }
-        else {
-            //Toast.makeText(this, "pizdets: "+methods.getInfo(), Toast.LENGTH_LONG).show();
-            MainActivity.methods.info=null;
-        }
-        MainActivity.locationTaskList.invalidate();
-    }
-    */
-
-
 }

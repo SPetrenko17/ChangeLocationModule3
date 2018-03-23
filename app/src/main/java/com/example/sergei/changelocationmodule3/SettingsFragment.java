@@ -14,10 +14,6 @@ import android.widget.TextView;
  */
 
 public class SettingsFragment extends Fragment {
-    View v;
-    Button wtf;
-    Button sortButton;
-    Button updList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +24,6 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        //v =inflater.inflate(R.layout.fragment_settings, container, false);
-//        wtf = (Button) v.findViewById(R.id.wtf);
-//        sortButton = (Button)v.findViewById(R.id.sortList);
         return inflater.inflate(R.layout.fragment_settings, container, false);
 
     }
