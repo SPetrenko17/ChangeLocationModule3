@@ -10,5 +10,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="map">Show map</string>
     <string name="add_map_task">Add task</string>
+    <string name="delete_task">Delete</string>
+    <string name="set_loc">Set</string>
 
 </resources>

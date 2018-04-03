@@ -3,6 +3,7 @@ package com.example.sergei.changelocationmodule3;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Geocoder;
@@ -43,17 +44,17 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
-    // private Timer mTimer;
-    // private MyTimerTask mMyTimerTask;
     static ArrayList<Task> ts = new ArrayList<>();
     static LocationManager locationManager;
     static Methods methods;
     SettingsFragment settingsFragment;
-    //ListFragmentListView listFragmentListView;
     LocationProvider mocLocationProvider;
     static TestLocationListenner testLocationListener = new TestLocationListenner();
     static boolean isTaskFromMap = false;
-    static ArrayAdapter adapter;
+    static TaskAdapter taskAdapter;
+    //static Location fakeLocation;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,54 +62,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         methods = new Methods();
         testLocationListener.SetUpLocationListener(this);
-
-
-        //adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice,cordList );
-        //.setAdapter(adapter);
-       // locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //locationTaskList = (ListView) findViewById(R.id.LocationTaskList);
-        //dataViewsFragment.textView3.setText("Ниже представлена форма заполнения задачи: Широта,Долгота,Ч:М");
-        //String[] MockLoc = str.split(",");
-
-       // mocLocationProvider = locationManager.getProvider(LOCATION_SERVICE);
-
-       //setNewLoc(); !!!!!!!!!!!!!!!!!
-
-        //Location location = new Location(mocLocationProvider);
-//        Double lat = Double.valueOf(MockLoc[0]);
-//        location.setLatitude(lat);
-//        Double longi = Double.valueOf(MockLoc[1]);
-//        location.setLongitude(longi);
-//        Double alti = Double.valueOf(MockLoc[2]);
-//        location.setAltitude(alti);
-
-        showAll();
-
-
-//        mTimer = new Timer();
-//        mMyTimerTask = new MyTimerTask();
-//        mTimer.schedule(mMyTimerTask, 0, 1000);
-
-
-       // new MyRunnableTask();// !!!!!ВЫЛЕТАЕТ ПРИ ПОВОРОТЕ
-
-
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
-    void setNewLoc(){
-        locationManager.removeTestProvider( LocationManager.GPS_PROVIDER);
-        locationManager.addTestProvider ( LocationManager.GPS_PROVIDER, "requiresNetwork" == "", "requiresSatellite" == "", "requiresCell" == "", "hasMonetaryCost" == "", "supportsAltitude" == "", "supportsSpeed" == "", "supportsBearing" == "", android.location.Criteria.POWER_LOW, android.location.Criteria.ACCURACY_FINE );
-        Location newLocation = new Location(LocationManager.GPS_PROVIDER);
-        newLocation.setLatitude (55.743621);
-        newLocation.setLongitude(37.681500);
-        newLocation.setAccuracy(500);
-        locationManager.setTestProviderEnabled ( LocationManager.GPS_PROVIDER, true );
-        locationManager.setTestProviderStatus ( LocationManager.GPS_PROVIDER, LocationProvider.AVAILABLE, null, System.currentTimeMillis() );
-        locationManager.setTestProviderLocation ( LocationManager.GPS_PROVIDER, newLocation );
-    }
+
     public void showAll(){
         FragmentManager in = getSupportFragmentManager();
         settingsFragment =(SettingsFragment)getFragmentManager().findFragmentById(R.id.tfragmentSettings);
-        //listFragmentListView (ListFragmentListView)getFragmentManager().findFragmentById(R.id.tListFragment);
 
     }
 

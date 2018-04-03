@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static GoogleMap mMap;
     static TimePickerDialog.OnTimeSetListener t;
     static TimePickerDialog timePickerDialog;
-    String locTime=" ";
+    String locTime;
     LatLng item;
     //Calendar time=Calendar.getInstance();
     @Override
@@ -67,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
             return tpd;
         }
+
         return super.onCreateDialog(id);
     }
 
@@ -102,17 +103,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                if(MainActivity.isTaskFromMap) {
+                if(MainActivity.isTaskFromMap && locTime!=null) {
                     mMap.addMarker(new MarkerOptions().position(latLng).title("Время задачи:" + locTime));
                     MainActivity.ts.add(new Task(latLng.latitude,latLng.longitude,Integer.parseInt(locTime.split(":")[0]),Integer.parseInt(locTime.split(":")[1])));
                     MainActivity.isTaskFromMap=false;
+                    locTime=null;
+                    closeActivity();
+                }
+                else if(locTime==null){
+                    closeActivity();
+                    Toast.makeText(getApplicationContext(),"Время не выбрано",Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
     }
-
+    private void closeActivity() {
+        startActivity(new Intent(MapsActivity.this, MainActivity.class));
+        this.finish();
+    }
 
     public void AddAllMarkers(ArrayList<Task> ts){
         for(Task t:ts){
@@ -133,7 +143,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(Task t:MainActivity.ts){
             Log.d("SORT",t.toString());
         }
-        MainActivity.adapter.notifyDataSetChanged();
+
+        MainActivity.taskAdapter.notifyDataSetChanged();
         super.onDestroy();
     }
 }
