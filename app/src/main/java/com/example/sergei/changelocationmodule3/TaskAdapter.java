@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.location.Criteria.ACCURACY_HIGH;
+
 /**
  * Created by sergei on 24.03.2018.
  */
@@ -24,10 +26,19 @@ public class TaskAdapter extends BaseAdapter {
     Button setLoc;
     LayoutInflater lInflater;
     ArrayList<Task> objects;
+    Location fakeloc;
     TaskAdapter(Context context,ArrayList<Task>objects){
         this.ctx = context;
         this.objects = objects;
         this.lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        fakeloc = new Location(MainActivity.locationProvider.getName());
+        fakeloc.setTime(System.currentTimeMillis());
+        fakeloc.setAccuracy(ACCURACY_HIGH);
+        fakeloc.setBearingAccuracyDegrees(ACCURACY_HIGH);
+        fakeloc.setSpeedAccuracyMetersPerSecond(ACCURACY_HIGH);
+        fakeloc.setVerticalAccuracyMeters(ACCURACY_HIGH);
+        fakeloc.setElapsedRealtimeNanos(1);
     }
     @Override
     public int getCount() {
@@ -67,22 +78,9 @@ public class TaskAdapter extends BaseAdapter {
         setLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Criteria criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_FINE);
-                criteria.setPowerRequirement(Criteria.POWER_LOW);
-                criteria.setAltitudeRequired(true);
-                criteria.setSpeedRequired(true);
-                criteria.setCostAllowed(true);
-                criteria.setBearingRequired(true);
-
-                Location fakeloc = new Location("");
                 fakeloc.setLatitude(MainActivity.ts.get(i).getLat());
                 fakeloc.setLongitude(MainActivity.ts.get(i).getLng());
-                fakeloc.setTime(System.currentTimeMillis());
-                fakeloc.setAccuracy(criteria.ACCURACY_HIGH);
-               // fakeloc=MainActivity.locationManager.getLastKnownLo)
-
-                MainActivity.locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, fakeloc);
+                MainActivity.locationManager.setTestProviderLocation(fakeloc.getProvider(), fakeloc);
             }
         });
         return view;

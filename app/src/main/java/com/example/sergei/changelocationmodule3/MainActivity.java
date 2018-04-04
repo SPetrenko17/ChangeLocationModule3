@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
@@ -41,6 +42,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static android.location.Criteria.ACCURACY_HIGH;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
     static TestLocationListenner testLocationListener = new TestLocationListenner();
     static boolean isTaskFromMap = false;
     static TaskAdapter taskAdapter;
+    static LocationProvider locationProvider;
+    static LocationProvider lm;
+     String TEST_PROVIDER = LocationManager.GPS_PROVIDER;
+
     //static Location fakeLocation;
 
 
@@ -63,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
         methods = new Methods();
         testLocationListener.SetUpLocationListener(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager.addTestProvider(LocationManager.GPS_PROVIDER, false, false, false, false, true, true, true, Criteria.POWER_LOW, Criteria.ACCURACY_FINE);
+        locationManager.setTestProviderStatus(LocationManager.GPS_PROVIDER, LocationProvider.AVAILABLE, null, System.currentTimeMillis());
+        locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+        lm= locationManager.getProvider(LocationManager.GPS_PROVIDER);
+        locationProvider = locationManager.getProvider(LocationManager.GPS_PROVIDER);
+
     }
 
     public void showAll(){
