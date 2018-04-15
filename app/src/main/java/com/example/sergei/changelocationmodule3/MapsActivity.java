@@ -31,21 +31,29 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback  {
     int DIALOG_TIME = 1;
     int myHour ;
     int myMinute ;
+    String h,m;
     static GoogleMap mMap;
     static TimePickerDialog.OnTimeSetListener t;
     static TimePickerDialog timePickerDialog;
     String locTime;
+    Date lTime;
     LatLng item;
     //Calendar time=Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        lTime = new Date();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -56,10 +64,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            myHour = hourOfDay;
-            myMinute = minute;
-            locTime=myHour+":"+myMinute;
-            Log.d("TIME", "Time is " + myHour + " hours " + myMinute + " minutes");
+            Calendar calendar = Calendar.getInstance();
+            lTime = calendar.getTime();
+            if(hourOfDay>lTime.getHours()){
+               lTime.setHours(hourOfDay);
+               lTime.setMinutes(minute);
+            }
+            else if(hourOfDay==lTime.getHours()&&minute>lTime.getMinutes()){
+                lTime.setHours(hourOfDay);
+                lTime.setMinutes(minute);
+
+            }
+            else {
+                lTime = null;
+            }
+            if(lTime!=null){
+                Log.d("TIME", "\n  Time is " + lTime.getTime() + " hours " + lTime.getMinutes() + " minutes");
+            }
+            else{
+                Log.d("TIME", "\n Time=null or time<current time");
+            }
+
+
         }
     };
     protected Dialog onCreateDialog(int id) {
@@ -103,17 +129,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                if(MainActivity.isTaskFromMap && locTime!=null) {
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("Время задачи:" + locTime));
-                    MainActivity.ts.add(new Task(latLng.latitude,latLng.longitude,Integer.parseInt(locTime.split(":")[0]),Integer.parseInt(locTime.split(":")[1])));
+                //ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+               // executorService.scheduleAtFixedRate(MainActivity.timeThread,0,1000, TimeUnit.MILLISECONDS);
+                //MainActivity.timer.cancel();
+
+                if(MainActivity.isTaskFromMap&&lTime!=null) {
+//                    if(MainActivity.timeBool) {
+//                        MainActivity.timer.cancel();
+//                        MainActivity.timeBool=false;
+//                    }
+
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("\n Время задачи:" + lTime.getHours()+":"+lTime.getMinutes()));
+                    MainActivity.ts.add(new Task(latLng.latitude,latLng.longitude,lTime.getHours(),lTime.getMinutes()));
                     MainActivity.isTaskFromMap=false;
-                    locTime=null;
+                    Collections.sort(MainActivity.ts,Task.SORTBYECONDS);
+                    if(!MainActivity.isTimerStart) {
+                        Date date = Calendar.getInstance().getTime();
+                        date.setHours(MainActivity.ts.get(0).getHours());
+                        date.setMinutes(MainActivity.ts.get(0).getMinutes());
+                        date.setSeconds(0);
+                        Log.d("TRD", "\n Готовлю поток на " + date.getHours() + ":" + date.getMinutes());
+                        //Если в потоке не поставилась новая дата то делаем это здесь
+                        MainActivity.timer.schedule(MainActivity.timeThread, date, 1000);//период проверить!!!!!!!!!!
+                    }
                     closeActivity();
                 }
-                else if(locTime==null){
+                else if(lTime==null){
+
                     closeActivity();
-                    Toast.makeText(getApplicationContext(),"Время не выбрано",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"\n Время не выбрано или меньше текущего",Toast.LENGTH_SHORT).show();
                 }
+
+               // MainActivity.timer.schedule(MainActivity.timeThread,0,1000);
 
             }
         });
@@ -126,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void AddAllMarkers(ArrayList<Task> ts){
         for(Task t:ts){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(t.getLat(),t.getLng())).title("Время задачи: "+t.getHours()+t.getMinutes()));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(t.getLat(),t.getLng())).title("Время задачи: "+lTime.getHours()+":"+lTime.getMinutes()));
         }
     }
 
@@ -141,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onDestroy() {
         Collections.sort(MainActivity.ts,Task.SORTBYECONDS);
         for(Task t:MainActivity.ts){
-            Log.d("SORT",t.toString());
+            Log.d("SORT","\n"+t.toString());
         }
 
         MainActivity.taskAdapter.notifyDataSetChanged();
