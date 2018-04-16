@@ -148,16 +148,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         date.setHours(MainActivity.ts.get(0).getHours());
                         date.setMinutes(MainActivity.ts.get(0).getMinutes());
                         date.setSeconds(0);
-                        Log.d("TRD", "\n Готовлю поток на " + date.getHours() + ":" + date.getMinutes());
-                        //Если в потоке не поставилась новая дата то делаем это здесь
-                        MainActivity.timer.schedule(MainActivity.timeThread, date, 1000);//период проверить!!!!!!!!!!
+
+                        //Если в потоке не поставилась новая дата то делаем это здесь somewhowork!
+                        if(MainActivity.whatTimer) {
+
+                            Log.d("TRD", "\n (onMapLongClick())Готовлю поток t2 на " + date.getHours() + ":" + date.getMinutes());
+                            MainActivity.timer2.schedule(MainActivity.timeThread, date, 100000);//период проверить!!!!!!!!!!
+
+                            if(!MainActivity.firstStart) {
+                                Log.d("TRD", "\n (onMapLongClick())Отменяю поток t1" );
+                                MainActivity.timer.cancel();
+                            }
+                            else{
+                                Log.d("TRD", "\n (onMapLongClick())ПЕРВЫЙ ЗАПУСК" );
+                                MainActivity.firstStart=false;
+                            }
+                            MainActivity.whatTimer=!MainActivity.whatTimer;
+                        }
+                        else if(!MainActivity.whatTimer){
+
+                            Log.d("TRD", "\n (onMapLongClick())Готовлю поток t1 на " + date.getHours() + ":" + date.getMinutes());
+                            MainActivity.timer.schedule(MainActivity.timeThread, date, 100000);
+                            Log.d("TRD", "\n (onMapLongClick())Отменяю поток t2" );
+                            MainActivity.timer2.cancel();
+                            MainActivity.whatTimer=!MainActivity.whatTimer;
+                        }
                     }
                     closeActivity();
                 }
                 else if(lTime==null){
 
                     closeActivity();
-                    Toast.makeText(getApplicationContext(),"\n Время не выбрано или меньше текущего",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"\n (onMapLongClick())Время не выбрано или меньше текущего",Toast.LENGTH_SHORT).show();
                 }
 
                // MainActivity.timer.schedule(MainActivity.timeThread,0,1000);
@@ -188,7 +210,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onDestroy() {
         Collections.sort(MainActivity.ts,Task.SORTBYECONDS);
         for(Task t:MainActivity.ts){
-            Log.d("SORT","\n"+t.toString());
+            Log.d("SORT","\n"+ "(MapsActivity.onDestroy())"+t.toString());
         }
 
         MainActivity.taskAdapter.notifyDataSetChanged();

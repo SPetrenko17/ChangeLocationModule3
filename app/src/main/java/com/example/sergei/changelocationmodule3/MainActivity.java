@@ -37,13 +37,18 @@ public class MainActivity extends AppCompatActivity {
     static LocationProvider lm;
     static int CurrTaskID;
     static MyLocationListener myLocationListener;
-    static Timer timer;
+    static Timer timer, timer2;
     static TimeThread timeThread;
-
+    static boolean whatTimer=true; //true-1 false-2
     Calendar calendar;
     Date date;
     Location fakeloc;
     static boolean isTimerStart;
+    static boolean firstStart=true;
+
+    static boolean timer1Enabled;
+    static boolean timer2Enabled;
+
 
     @Override
     protected void onStart() {
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         timeThread = new TimeThread();
         timer = new Timer();
+        timer2 = new Timer();
         //timer.schedule(timeThread, 1, 1000);
 
         //ts = new ArrayList<>();
@@ -95,15 +101,26 @@ public class MainActivity extends AppCompatActivity {
     public class TimeThread extends TimerTask {
         @Override
         public boolean cancel() {
-//с первым работает потом все стирается((
-            if(!isTimerStart) {
-                Date date = Calendar.getInstance().getTime();
-                date.setHours(ts.get(0).getHours());
-                date.setMinutes(ts.get(0).getMinutes());
-                date.setSeconds(0);
-                Log.d("TRD", "\n Готовлю поток на " + date.getHours() + ":" + date.getMinutes());
+
+            if(whatTimer) {
                 //Если в потоке не поставилась новая дата то делаем это здесь
-                timer.schedule(MainActivity.timeThread, date, 1000);//период проверить!!!!!!!!!!
+
+                if(ts.get(0)!=null) {
+                   // whatTimer=!whatTimer;
+                    Log.d("TRD", "\n (Timer1.cancel())Готовлю поток2 на " + date.getHours() + ":" + date.getMinutes());
+                    timer2.schedule(MainActivity.timeThread, date, 100000);//период проверить!!!!!!!!!!
+                    whatTimer=!whatTimer;
+                }
+            }
+            else if(!whatTimer){
+                //Если в потоке не поставилась новая дата то делаем это здесь
+
+                if(ts.get(0)!=null) {
+                    //whatTimer=!whatTimer;
+                    Log.d("TRD", "\n (Timer2.cancel())Готовлю поток1 на " + date.getHours() + ":" + date.getMinutes());
+                    timer.schedule(MainActivity.timeThread, date, 100000);//период проверить!!!!!!!!!! проверить максимальный период
+                    whatTimer=!whatTimer;
+                }
             }
                 return super.cancel();
 
@@ -112,35 +129,65 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            isTimerStart=true;
             if(ts.get(0)!=null) {
-
+                if(whatTimer) {
+                    Log.d("TRD", "\n Работает первый поток");
+                }
+                else if(!whatTimer){
+                    Log.d("TRD", "\n Работатет второй поток" );
+                }
+                //можно убрать
                 calendar = Calendar.getInstance();
                 date = calendar.getTime();
+                date.setHours(ts.get(0).getHours());
+                date.setMinutes(ts.get(0).getMinutes());
+                date.setSeconds(0);
+
+
                 fakeloc.setLatitude(ts.get(0).getLat());
                 fakeloc.setLongitude(ts.get(0).getLng());
-                Log.d("TRD", "\n Задача установлена" + " lat:" + ts.get(0).getLat() + " lng:" + ts.get(0).getLng() + " h:" + ts.get(0).getHours() + " m:" + ts.get(0).getMinutes());
-                Log.d("TRD", "\n removing: " + ts.get(0));
+                Log.d("TRD", "\n (Timer.run()Геоданные в fakeloc установлены" + " lat:" + ts.get(0).getLat() + " lng:" + ts.get(0).getLng() + " h:" + ts.get(0).getHours() + " m:" + ts.get(0).getMinutes());
+                Log.d("TRD", "\n (Timer.run())removing: " + ts.get(0));
                 ts.remove(0);
+                Log.d("TRD", "\n (Timer.run())Готовлю запуск runOnUIThread");
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("TRD", "\n runOnUIThread работает");
                         taskAdapter.notifyDataSetChanged();
+                        Log.d("TRD", "\n (Timer.runOnUIThread())Адаптер уведомлен");
                     }
                 });
+                // runOnUIThread не срабатывает в первый раз
                 locationManager.clearTestProviderLocation(fakeloc.getProvider());
                 locationManager.setTestProviderLocation(fakeloc.getProvider(), fakeloc);
+                Log.d("TRD", "\n (Timer.run())Данные провайдера изменены");
 
+                Log.d("TRD", "\nЛист:");
                 for (Task t : ts) {
                     Log.d("TRD", "\n"+t.toString());
                 }
             }
             else{
-                Log.d("TRD", "\n Чето не так");
+                //пробую все остановить
+                if(whatTimer) {
+                    timer.cancel();
+                }
+                else if(!whatTimer){
+                    timer2.cancel();
+                }
+                Log.d("TRD", "\n (Timer.run())Чето не так");
             }
-            Log.d("TRD", "\n Отменяю поток");
+
+            if(whatTimer) {
+                Log.d("TRD", "\n (Timer1.run())Отменяю поток1 в cancel()");
+            }
+            else if(!whatTimer){
+                Log.d("TRD", "\n (Timer.run())Отменяю поток2 в cancel()");
+            }
             this.cancel();
-            isTimerStart=false;
+
 
         }
     }
