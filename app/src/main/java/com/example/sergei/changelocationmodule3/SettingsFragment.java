@@ -22,14 +22,11 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //textView1 =(TextView)getView().findViewById(R.id.textView1);
         //textView2 =(TextView)getView().findViewById(R.id.textView2);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_settings, container, false);
-
     }
 
     @Override

@@ -28,10 +28,13 @@ public class Task {
         return minutes;
     }
     public String toString(){
-        return lat+","+lng+","+hours+":"+minutes;
+        return lat+","+lng+","+hours+","+minutes;
     }
    public int toSeconds() {
         return hours*3600+minutes*60;
+    }
+    public long toMilliSeconds() {
+        return toSeconds()*1000;
     }
 
     public Task(double lat, double lng, int hours, int minutes) {
@@ -40,8 +43,15 @@ public class Task {
         this.hours=hours;
         this.minutes=minutes;
     }
+    public Task(String s) {
 
-    public static final Comparator<Task> SORTBYECONDS = new Comparator<Task>(){
+        this.lat=Double.valueOf(s.split(",")[0]);
+        this.lng=Double.valueOf(s.split(",")[1]);
+        this.hours=Integer.valueOf(s.split(",")[2]);
+        this.minutes=Integer.valueOf(s.split(",")[3]);
+    }
+
+     public static final Comparator<Task> SORTBYECONDS = new Comparator<Task>(){
         @Override
         public int compare(Task task, Task t1) {
             return Integer.compare(task.toSeconds(),t1.toSeconds());

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -46,15 +47,19 @@ public class TaskAdapter extends BaseAdapter {
         fakeloc = new Location(MainActivity.locationProvider.getName());
         fakeloc.setTime(System.currentTimeMillis());
         fakeloc.setAccuracy(ACCURACY_HIGH);
-        fakeloc.setBearingAccuracyDegrees(ACCURACY_HIGH);
-        fakeloc.setSpeedAccuracyMetersPerSecond(ACCURACY_HIGH);
-        fakeloc.setVerticalAccuracyMeters(ACCURACY_HIGH);
+        fakeloc.setBearing(ACCURACY_HIGH);
+        fakeloc.setSpeed(ACCURACY_HIGH);
+        //fakeloc.setVerticalAccuracyMeters(ACCURACY_HIGH);
         fakeloc.setElapsedRealtimeNanos(1);
     }
 
     @Override
     public int getCount() {
-        return objects.size();
+        if(objects!=null) {
+            return objects.size();
+        }
+        else return 0;
+
     }
 
     @Override
@@ -72,20 +77,26 @@ public class TaskAdapter extends BaseAdapter {
         if (view == null) {
             view = lInflater.inflate(R.layout.task_xml, viewGroup, false);
         }
-        delBtn = view.findViewById(R.id.deleteBtn);
-        setLoc = view.findViewById(R.id.locBtn);
-        TextView latView = view.findViewById(R.id.latView);
-        TextView lngView = view.findViewById(R.id.lngView);
-        TextView timeView = view.findViewById(R.id.timeView);
-        latView.setText("lat: " + objects.get(i).getLat() + " ");
-        lngView.setText("lng: " + objects.get(i).getLng() + " ");
-        timeView.setText("time-" + objects.get(i).getHours()+":"+objects.get(i).getMinutes());
+        delBtn = (Button) view.findViewById(R.id.deleteBtn);
+        setLoc = (Button) view.findViewById(R.id.locBtn);
+        TextView latView = (TextView) view.findViewById(R.id.latView);
+        TextView lngView = (TextView) view.findViewById(R.id.lngView);
+        TextView timeView = (TextView) view.findViewById(R.id.timeView);
+        try {
+            latView.setText("lat: " + objects.get(i).getLat() + " ");
+            lngView.setText("lng: " + objects.get(i).getLng() + " ");
+            timeView.setText("time-" + objects.get(i).getHours() + ":" + objects.get(i).getMinutes());
+        }
+        catch (Exception e){
+
+        }
 
         delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity.ts.remove(i);
                 MainActivity.taskAdapter.notifyDataSetChanged();
+
             }
         });
         setLoc.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +111,8 @@ public class TaskAdapter extends BaseAdapter {
         return view;
     }
 
-
-
-
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
 }

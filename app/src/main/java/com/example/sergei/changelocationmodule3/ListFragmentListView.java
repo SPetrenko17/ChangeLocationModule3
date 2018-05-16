@@ -26,10 +26,8 @@ public class ListFragmentListView extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         MainActivity.taskAdapter = new TaskAdapter(getActivity(),MainActivity.ts);
         setListAdapter(MainActivity.taskAdapter);
-
     }
 
     @Override
