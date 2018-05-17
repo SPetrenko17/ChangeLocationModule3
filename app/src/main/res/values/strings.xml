@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ChangeLocationModule3</string>
+    <string name="app_name_new">GeoSub</string>
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
     <string name="location_settings">Location settings</string>

@@ -14,28 +14,17 @@
         android:id="@+id/settingActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickLocationSettings"
-        android:text="@string/open_settings"
-        android:layout_toRightOf="@id/showMap"/>
+        android:onClick="onClickShowMap"
+        android:text="@string/map"
+        android:layout_toRightOf="@id/showLoc"/>
 
     <Button
-        android:id="@+id/showMap"
+        android:id="@+id/showLoc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="loc"
         android:text="@string/loc"
         android:layout_toRightOf="@+id/AddMapTask"/>
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="tv1"
-        android:layout_below="@id/AddMapTask"/>
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="tv2"
-        android:layout_below="@+id/textView1" />
+
 
 </RelativeLayout>

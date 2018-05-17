@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -27,11 +28,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.math3.util.MathArrays;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -51,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int myMinute ;
     static GoogleMap mMap;
     Date lTime;
-    LatLng item;
+    static LatLng item;
 
     ArrayList<Task> mapts= new ArrayList<>();
 
@@ -162,12 +166,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void AddAllMarkers() {
         for (Task t : mapts) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(t.getLat(), t.getLng())).title("Время задачи: " + lTime.getHours() + ":" + lTime.getMinutes()));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(t.getLat(), t.getLng())).title("Время задачи: " + t.getHours() + ":" + t.getMinutes()));
         }
     }
 
+    public void addCurrMarker(Location location){
 
-    public void showItemOnMap(ListView l, int position) {
+        mMap.addMarker(new MarkerOptions().position(new LatLng( location.getLatitude(),location.getLongitude())).title("You are here").alpha(0.5f));
+        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+    }
+
+
+    public static void showItemOnMap(ListView l, int position) {
         item = new LatLng(Double.parseDouble(l.getItemAtPosition(position).toString().split(",")[0]), Double.parseDouble(l.getItemAtPosition(position).toString().split(",")[1]));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(item));
 

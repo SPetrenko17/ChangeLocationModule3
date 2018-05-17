@@ -1,6 +1,7 @@
 package com.example.sergei.changelocationmodule3;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -79,6 +82,7 @@ public class TaskAdapter extends BaseAdapter {
         }
         delBtn = (Button) view.findViewById(R.id.deleteBtn);
         setLoc = (Button) view.findViewById(R.id.locBtn);
+
         TextView latView = (TextView) view.findViewById(R.id.latView);
         TextView lngView = (TextView) view.findViewById(R.id.lngView);
         TextView timeView = (TextView) view.findViewById(R.id.timeView);
@@ -96,6 +100,14 @@ public class TaskAdapter extends BaseAdapter {
             public void onClick(View view) {
                 MainActivity.ts.remove(i);
                 MainActivity.taskAdapter.notifyDataSetChanged();
+                Calendar calendar = Calendar.getInstance();
+                if(!MainActivity.ts.isEmpty()) {
+                    Long currtime = (long) (calendar.getTime().getHours() * 3600000 + calendar.getTime().getMinutes() * 60000);
+                    long triggerAtMillis = MainActivity.ts.get(0).toMilliSeconds() - currtime;
+                    Log.d("myLogs", "am.set " + MainActivity.ts.get(0).toString());
+                    TaskSetter.am.set(AlarmManager.RTC, System.currentTimeMillis() + triggerAtMillis, TaskSetter.pi);
+                }
+                else Log.d("myLogs", "ts is empty");
 
             }
         });
@@ -114,5 +126,6 @@ public class TaskAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+
     }
 }

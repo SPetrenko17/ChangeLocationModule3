@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
     static TaskAdapter taskAdapter;
     static LocationProvider locationProvider;
 
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
-
     Date date;
     static Location fakeloc;
 
@@ -73,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted
-                    //readContacts();
                 } else {
                     // permission denied
                 }
@@ -97,13 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
         taskSetter = new TaskSetter();
 
-
-
-       // am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        //intent = createIntent("action","extra");
-
-       // pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         Thread t = new Thread(new Runnable() {
 
                 public void run () {
@@ -178,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
         }
         Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)), Toast.LENGTH_SHORT);
         toast.show();
+       // MapsActivity.addCurrMarker(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+        //startActivity(new Intent(MainActivity.this, MapsActivity.class));
     }
     public void showAll(){
         FragmentManager in = getSupportFragmentManager();
@@ -236,17 +227,6 @@ public class MainActivity extends AppCompatActivity {
             date=calendar.getTime();
             taskSetter = new TaskSetter();
             taskSetter.setTask(getApplicationContext());
-
-
-
-            //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pendingIntent);
-
-//            Log.d("myLogs", "triggerAtMillis + "+Long.toString( (ts.get(0).toSeconds() - date.getHours()*3600-date.getMinutes()*60)*1000));
-//
-//            am.set(AlarmManager.RTC, System.currentTimeMillis() + (ts.get(0).toSeconds() - date.getHours()*3600-date.getMinutes()*60)*1000, pendingIntent);
-//            am.cancel(pendingIntent);
-//            am.set(AlarmManager.RTC, System.currentTimeMillis() + (ts.get(0).toSeconds() - date.getHours()*3600-date.getMinutes()*60)*1000, pendingIntent);
-//            Toast.makeText(getApplicationContext(), "\n 1 задача сработает через " + (ts.get(0).toSeconds() - date.getHours()*3600-date.getMinutes()*60) + "с ", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -266,15 +246,6 @@ public class MainActivity extends AppCompatActivity {
     public Intent getIntent(){
         return this.getParentActivityIntent();
     }
-//    public static void saver(){
-//
-//        SharedPreferences.Editor spEdit = getSharedPreferences("spKey",0).edit();
-//        Set<String> set = new HashSet<String>();
-//        for(Task t:ts){
-//            set.add(t.toString());
-//        }
-//        spEdit.putStringSet("Tasks",set);
-//        spEdit.commit();
-//    }
+
 
 }
